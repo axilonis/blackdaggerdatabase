@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Prompt</title>
+    <style>
+        body {
+            background-color: black;
+            color: rgb(255, 255, 255);
+            font-family: monospace;
+            padding: 20px;
+            font-size: 16px;
+        }
+        #output {
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        #input-line {
+            display: flex;
+            font-size: 16px;
+        }
+        #input {
+            background: none;
+            border: none;
+            color: rgb(255, 255, 255);
+            font-family: monospace;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+        }
+        #prompt {
+            flex-shrink: 0;
+        }
+        #ascii-title {
+            font-size: 12px;
+            white-space: pre;
+    }
+    </style>
+</head>  
+<body>
+    <p>Microsoft Facility-03 Black Dagger Database Terminal Disk Operating System [Version PRIVATE 1.05.0.80] <br>(c) Anderson Robotics Corporation. All rights reserved. </p><br>
+    <div class="ascii-title">
+<pre class="ascii-title">
+         ____    ______  ____    ______   __     ______  ______  __    __           __      __             ____    ___                    __          ____                                             
+        /\  _ \ /\  _  \/\  _ \ /\__  _\ /\ \   /\__  _\/\__  _\/\ \  /\ \        / __ \  / __ \          /\  _ \ /\_ \                  /\ \        /\  _ \                                           
+        \ \ \_/ \ \ \_\ \ \ \/\_\/_/\ \/ \ \ \  \/_/\ \/\/_/\ \/\  \ \\/ /       /\ \/\ \/\_\ \ \         \ \ \_\ \//\ \      __      ___\ \ \/ \    \ \ \/\ \     __       __      __      __   _ __  
+         \ \  _\ \ \  __ \ \ \/_/_ \ \ \  \ \ \  __\ \ \   \ \ \  \  \ /  _______\ \ \ \ \/_/_\_\_         \ \  _ \ \ \ \   / __ \   / ___\ \   \     \ \ \ \ \  / __ \   / _  \  / _  \  / __ \/\  __\
+          \ \ \/  \ \ \/\ \ \ \L\ \ \_\ \__\ \ \L\ \\_\ \__ \ \ \   \ \ \/\______\\ \ \_\ \/\ \_\ \         \ \ \_\ \\_\ \_/\ \_\ \_/\ \__/\ \ \\`\    \ \ \_\ \/\ \_\ \_/\ \_\ \/\ \_\ \/\  __/\ \ \/ 
+           \ \_\   \ \_\ \_\ \____/ /\_____\\ \____//\_____\ \ \_\   \ \_\/______/ \ \____/\ \____/          \ \____//\____\ \__/ \_\ \____\\ \_\ \_\   \ \____/\ \__/ \_\ \____ \ \____ \ \____\\ \_\ 
+            \/_/    \/_/\/_/\/___/  \/_____/ \/___/ \/_____/  \/_/    \/_/          \/___/  \/___/            \/___/ \/____/\/__/\/_/\/____/ \/_/\/_/    \/___/  \/__/\/_/\/___L\ \/___L\ \/____/ \/_/ 
+                                                                                                                                                                            /\____/ /\____/            
+                                                                                                                                                                            \_/__/  \_/__/
+
+                                                                                F A C I L I T Y - 0 3    B L A C K   D A G G E R
+                                                                        
+
+
+                                                                        
+                                                                        </pre>
+    </div>
+    <div id="output">Please enter your encryption key to gain your database clearence level. If you are not in possesion of an encryption key, please input `public` .<br>DATABASE PROTECTED BY THE AR-ANTI-DECLASSIFICATION-SYSTEM-01 (AADS-01)<br></div>
+    <div id="input-line"><span id="prompt">C:\LocalAccount&gt; </span><input id="input" autofocus></div>
+
+    <script>
+
+const commandLevels = {
+            0.9: {
+                'help': 'basic command format: [command]<br>depth command format: depth [abreviation-of-subdata] (you will be notified if one of the normal commands executed has viewable subdatas. the subdata abreviations will be mentioned before every subdata, and they will be written inbetween right brackets)<br>login command format: login [database]<br>view command format: view [dir file]<br><br>view a detailed guide here:',
+                'cmds0.9': '<br>---LOCAL SYSTEM---<br>ping<br>ipconfig<br>systeminfo<br>ver<br>view (for dir)<br>dir<br>color(red,blue,green,white)<br>echo<br>inbox<br><br>---DATABASE SYSTEM---<br>info<br>div<br>link<br>soc<br>archive<br>depth (for subdatas)',
+                'inbox': 'Empty',
+                'login fbg': 'You are already logged in.',
+                'info': '<br>---SITE INFORMATION---<br>Statute of NAAD                        https://docs.google.com/document/d/1BHoKZdijqbHUKskOg1IusZm3b2DdAvY6FfOdwmYaQ7g/edit?usp=sharing<br>Facility-03 Coded Protocols            https://docs.google.com/document/d/1Yotf0Qvz3w4zLcxctTrUV4-tS_0t9b8ZZ8RZzjfXGCE/edit?usp=sharing<br>Facility-03 Roleplay Information       https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?usp=drivesdk<br>Facility-03 Lore Information 1         https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?tab=t.vaqgwhaqxfmv<br>Facility-03 Lore Information 2         https://docs.google.com/document/d/17aZxqbcb1LMCNMHT5QtCIA-hZSRk-kmTmKcbBsRCGzc/edit?usp=sharing',
+                'div':'<br>---HOSTILES---<br>[TS] Test Subjects<br><br>---COMBATANTS---<br>[SCED] Security & Containment Enforcement Division<br>[SRRF] Specialized Counter-Anomaly Rapid Response & Enforcement Detachment<br><br>---PERSONNEL---<br>[RT] Research & Technology<br>[HTS] Health & Trauma Services<br>[MS] Maintenance & Supply<br>[FMS] Facility Management Staff<br>[BFA] Board of Facility Administration<br><br>(!) You may view these subdatas (!)<br>Subdata Command Format: depth [subdata-database]',
+                'link':'Anderson Robotics<br>GRU Division P<br>Nu-7 Hammer Down<br>Blacksite Blossom',
+                'soc':'Discord Server                https://discord.gg/kSyrX5cjXM<br>Faction Hub                   https://discord.gg/eAPUcB7Gp8<br>TS Server                     https://discord.gg/n8J35Zz6KM<br>SCED Server                   https://discord.gg/5KcjqDfFza<br>SCARRED Server                https://discord.gg/5KcjqDfFza<br>ACNS Server                   https://discord.gg/MRnjMtE8aS<br>HTS Server                    https://discord.gg/unZ25GZNay<br>FETS Server                   https://discord.gg/mYdvQr87vu<br>FMS Server                    https://discord.gg/Ng8e6PYVPq<br>Anderson Robotics             https://discord.gg/RpJ5b6Sgd4<br>GRU Division “P”              https://discord.gg/bqt2rE8qnf<br>Nu-7 "Hammer Down"            https://discord.gg/8ypwAcjzMM',
+            },
+            1: {
+                'help': 'basic command format: [command]<br>depth command format: depth [abreviation-of-subdata] (you will be notified if one of the normal commands executed has viewable subdatas. the subdata abreviations will be mentioned before every subdata, and they will be written inbetween right brackets)<br>login command format: login [database]<br>view command format: view [dir file]',
+                'cmds1': '<br>---LOCAL SYSTEM---<br>ping<br>ipconfig<br>systeminfo<br>ver<br>view (for dir)<br>dir<brcolor(red,blue,green,white)<br>echo<br>inbox<br><br>---DATABASE SYSTEM---<br>info<br>div<br>link<br>soc<br>depth (for subdatas)',
+                'inbox': 'Empty',
+                'login fbg': 'You are already logged in.',
+                'info': '<br>---SITE INFORMATION---<br>Statute of NAAD                        https://docs.google.com/document/d/1BHoKZdijqbHUKskOg1IusZm3b2DdAvY6FfOdwmYaQ7g/edit?usp=sharing<br>Facility-03 Coded Protocols            https://docs.google.com/document/d/1Yotf0Qvz3w4zLcxctTrUV4-tS_0t9b8ZZ8RZzjfXGCE/edit?usp=sharing<br>Facility-03 Roleplay Information       https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?usp=drivesdk<br>Facility-03 Lore Information 1         https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?tab=t.vaqgwhaqxfmv<br>Facility-03 Lore Information 2         https://docs.google.com/document/d/17aZxqbcb1LMCNMHT5QtCIA-hZSRk-kmTmKcbBsRCGzc/edit?usp=sharing',
+                'div':'<br>---HOSTILES---<br>[TS] Test Subjects<br><br>---COMBATANTS---<br>[SCED] Security & Containment Enforcement Division<br>[SRRF] Specialized Counter-Anomaly Rapid Response & Enforcement Detachment<br><br>---PERSONNEL---<br>[RT] Research & Technology<br>[HTS] Health & Trauma Services<br>[MS] Maintenance & Supply<br>[FMS] Facility Management Staff<br>[BFA] Board of Facility Administration<br><br>(!) You may view these subdatas (!)',
+                'link':'Anderson Robotics<br>GRU Division P<br>Nu-7 Hammer Down<br>Blacksite Blossom',
+                'soc':'Discord Server                https://discord.gg/kSyrX5cjXM<br>Faction Hub                   https://discord.gg/eAPUcB7Gp8<br>TS Server                     https://discord.gg/n8J35Zz6KM<br>SCED Server                   https://discord.gg/5KcjqDfFza<br>SCARRED Server                https://discord.gg/5KcjqDfFza<br>ACNS Server                   https://discord.gg/MRnjMtE8aS<br>HTS Server                    https://discord.gg/unZ25GZNay<br>FETS Server                   https://discord.gg/mYdvQr87vu<br>FMS Server                    https://discord.gg/Ng8e6PYVPq<br>Anderson Robotics             https://discord.gg/RpJ5b6Sgd4<br>GRU Division “P”              https://discord.gg/bqt2rE8qnf<br>Nu-7 "Hammer Down"            https://discord.gg/8ypwAcjzMM',
+                'depth ts':'Test subjects are, like the name suggests, the ones that will be used to test anomalies or do labor which has a high risk of killing EDCE personnel.<br>They know of their past, taken from prisons, either death row or without people that will miss them - This often makes them very volatile, so SCED is always allowed to use force.<br>Most ethical rules do not apply to them',
+                'depth sced':'So far the most popular department, they are general facility guards that ensure everything goes smoothly without issues<br>They are usually stationed at either checkpoints, TSC, or patrolling the hallways<br>They have full permission to use lethal force if anything threatens the safety of other personnel',
+                'depth srrf':'SRRF are the equivalent of MTF, the only difference being is that they are permanently stationed at the site<br>They are usually equipped with heavy weaponry, and they will respond to any disruptencies or threats in the facility as quick as possible<br>Rarely seen in TSC',
+                'depth rt':'They are the researchers that conduct tests and contain anomalies<br>Their primary objective is to find ways to neutralize anomalies<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth hts':'They are pretty much doctors and nurses<br>They are the ones who give out amnestics<br>They are allowed to conduct check-ups on personnel and give them medical assistance<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth ms':'They are the facility engineers who repair broken objects<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth fms':'They are the facility managers who supervise everything and manage things, not to be confused with BFA<br>They are the ones who raise alarms, make announcements, etc<br>Lower rank than BFA',
+                'depth bfa':'They are the facility administrators who supervise everything and make all decisions<br>They are the ones who raise alarms, make announcements, etc<br>They have full power and permission over everything',
+            },
+            2: {
+                'help': 'basic command format: [command]<br>depth command format: depth [abreviation-of-subdata] (you will be notified if one of the normal commands executed has viewable subdatas. the subdata abreviations will be mentioned before every subdata, and they will be written inbetween right brackets)<br>login command format: login [database]<br>view command format: view [dir file]',
+                'cmds2': '<br>---LOCAL SYSTEM---<br>ping<br>ipconfig<br>systeminfo<br>ver<br>view (for dir)<br>dir<br>color(red,blue,green,white)<br>echo<br>inbox<br><br>---DATABASE SYSTEM---<br>info<br>div<br>link<br>soc<br>archive<br>depth (for subdatas)',
+                'inbox': 'Empty',
+                'login fbg': 'You are already logged in.',
+                'info': '<br>---SITE INFORMATION---<br>Statute of NAAD                        https://docs.google.com/document/d/1BHoKZdijqbHUKskOg1IusZm3b2DdAvY6FfOdwmYaQ7g/edit?usp=sharing<br>Facility-03 Coded Protocols            https://docs.google.com/document/d/1Yotf0Qvz3w4zLcxctTrUV4-tS_0t9b8ZZ8RZzjfXGCE/edit?usp=sharing<br>Facility-03 Roleplay Information       https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?usp=drivesdk<br>Facility-03 Lore Information 1         https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?tab=t.vaqgwhaqxfmv<br>Facility-03 Lore Information 2         https://docs.google.com/document/d/17aZxqbcb1LMCNMHT5QtCIA-hZSRk-kmTmKcbBsRCGzc/edit?usp=sharing',
+                'archive': '<br>---ANOMALIES---<br>AN-166 [DECLASSIFIED]                  https://docs.google.com/document/d/12VybqqF3xk2DanUEfqWNz_ztWKaKMWZp0GFiPKzV3p4/edit<br>AN-584 [DECLASSIFIED]                  https://docs.google.com/document/d/1hLHrfHHu7S9qTZw-z80II65Pt4fk4MbqNs6yLJyQYKc/edit?usp=sharing<br><br>---PERSONNEL---<br>Melvin Français                        https://docs.google.com/document/d/1PHCOV9DbfEK9WlsyBQqPfXS0ks_SZShEBuKiyIAdZps/edit?usp=sharing<br>Issah A. Eisenhower                    https://docs.google.com/document/d/1XDTfrmQuS8IByplhm4kK4vsnPv1lTydvAKjtVT9V_SI/edit?usp=drivesdk<br>Cole Matthews                          https://docs.google.com/document/d/11AHHWUDzvvs5enapDKJ2PQcjwMFHDUo6zT3hS2CzUTU/edit?tab=t.0<br>Andrei Mihai Povaliceanu               https://docs.google.com/document/d/1O-qucMfyPtPdYwM9ggEySGHfCavF_SCIMM_UfOlYCmc/edit?usp=drivesdk',
+                'div':'<br>---HOSTILES---<br>[TS] Test Subjects<br><br>---COMBATANTS---<br>[SCED] Security & Containment Enforcement Division<br>[SRRF] Specialized Counter-Anomaly Rapid Response & Enforcement Detachment<br><br>---PERSONNEL---<br>[RT] Research & Technology<br>[HTS] Health & Trauma Services<br>[MS] Maintenance & Supply<br>[FMS] Facility Management Staff<br>[BFA] Board of Facility Administration<br><br>(!) You may view these subdatas (!)',
+                'link':'Anderson Robotics<br>GRU Division P<br>Nu-7 Hammer Down<br>Blacksite Blossom',
+                'soc':'Discord Server                https://discord.gg/kSyrX5cjXM<br>Faction Hub                   https://discord.gg/eAPUcB7Gp8<br>TS Server                     https://discord.gg/n8J35Zz6KM<br>SCED Server                   https://discord.gg/5KcjqDfFza<br>SCARRED Server                https://discord.gg/5KcjqDfFza<br>ACNS Server                   https://discord.gg/MRnjMtE8aS<br>HTS Server                    https://discord.gg/unZ25GZNay<br>FETS Server                   https://discord.gg/mYdvQr87vu<br>FMS Server                    https://discord.gg/Ng8e6PYVPq<br>Anderson Robotics             https://discord.gg/RpJ5b6Sgd4<br>GRU Division “P”              https://discord.gg/bqt2rE8qnf<br>Nu-7 "Hammer Down"            https://discord.gg/8ypwAcjzMM',
+                'depth ts':'Test subjects are, like the name suggests, the ones that will be used to test anomalies or do labor which has a high risk of killing EDCE personnel.<br>They know of their past, taken from prisons, either death row or without people that will miss them - This often makes them very volatile, so SCED is always allowed to use force.<br>Most ethical rules do not apply to them',
+                'depth sced':'So far the most popular department, they are general facility guards that ensure everything goes smoothly without issues<br>They are usually stationed at either checkpoints, TSC, or patrolling the hallways<br>They have full permission to use lethal force if anything threatens the safety of other personnel',
+                'depth srrf':'SRRF are the equivalent of MTF, the only difference being is that they are permanently stationed at the site<br>They are usually equipped with heavy weaponry, and they will respond to any disruptencies or threats in the facility as quick as possible<br>Rarely seen in TSC',
+                'depth rt':'They are the researchers that conduct tests and contain anomalies<br>Their primary objective is to find ways to neutralize anomalies<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth hts':'They are pretty much doctors and nurses<br>They are the ones who give out amnestics<br>They are allowed to conduct check-ups on personnel and give them medical assistance<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth ms':'They are the facility engineers who repair broken objects<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth fms':'They are the facility managers who supervise everything and manage things, not to be confused with BFA<br>They are the ones who raise alarms, make announcements, etc<br>Lower rank than BFA',
+                'depth bfa':'They are the facility administrators who supervise everything and make all decisions<br>They are the ones who raise alarms, make announcements, etc<br>They have full power and permission over everything',
+            },
+            3: {
+                'help': 'basic command format: [command]<br>depth command format: depth [abreviation-of-subdata] (you will be notified if one of the normal commands executed has viewable subdatas. the subdata abreviations will be mentioned before every subdata, and they will be written inbetween right brackets)<br>login command format: login [database]<br>view command format: view [dir file]',
+                'cmds3': '<br>---LOCAL SYSTEM---<br>ping<br>ipconfig<br>systeminfo<br>ver<br>view (for dir)<br>dir<br>color(red,blue,green,white)<br>echo<br>inbox<br><br>---DATABASE SYSTEM---<br>info<br>div<br>link<br>soc<br>archive<br>depth (for subdatas)',
+                'inbox': 'Empty',
+                'login fbg': 'You are already logged in.',
+                'info': '<br>---SITE INFORMATION---<br>Statute of NAAD                        https://docs.google.com/document/d/1BHoKZdijqbHUKskOg1IusZm3b2DdAvY6FfOdwmYaQ7g/edit?usp=sharing<br>Facility-03 Coded Protocols            https://docs.google.com/document/d/1Yotf0Qvz3w4zLcxctTrUV4-tS_0t9b8ZZ8RZzjfXGCE/edit?usp=sharing<br>Facility-03 Roleplay Information       https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?usp=drivesdk<br>Facility-03 Lore Information 1         https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?tab=t.vaqgwhaqxfmv<br>Facility-03 Lore Information 2         https://docs.google.com/document/d/17aZxqbcb1LMCNMHT5QtCIA-hZSRk-kmTmKcbBsRCGzc/edit?usp=sharing',
+                'archive': '<br>---ANOMALIES---<br>AN-166                                 https://docs.google.com/document/d/12VybqqF3xk2DanUEfqWNz_ztWKaKMWZp0GFiPKzV3p4/edit<br>AN-027                                 https://docs.google.com/document/d/1d9pePwGj_qnTRgbTVn2Xy4RD10NyVH2eIP4IzNHhoOI/edit?usp=drivesdk<br>SCP-049                                https://docs.google.com/document/d/1bS1zI0Ol5IKXQCp8vlohgJRv6rT-dxao/edit?usp=sharing&ouid=101609366160739451702&rtpof=true&sd=true<br>AN-006                                 https://docs.google.com/document/d/17w2AvvWGPkdepn8uZ_lYpf1tkRuU5smAquuFNqTtebM/edit?usp=drivesdk<br>AN-584                                 https://docs.google.com/document/d/1hLHrfHHu7S9qTZw-z80II65Pt4fk4MbqNs6yLJyQYKc/edit?usp=sharing<br>AN-139                                 https://docs.google.com/document/d/1Mtl-c6WYKndowz5cANh11dgKrj_AQ2-E_EJ63U2bUfo/edit?usp=sharing<br>AN-821                                 https://docs.google.com/document/d/1nYEpV533yCREmKI-sem4Z95Ti0A-myCx4Cfef6ZElpM/edit?usp=sharing<br>AN-044                                 https://docs.google.com/document/d/1WGZA4sQyZsM5g1pq6EERnOMg-_tkqSZIMjnXYeqDHlo/edit?usp=drivesdk<br>AN-019                                 https://docs.google.com/document/d/14rEla0zQv2hOaLdAcmpbNmz6XKu49cHDfojwlF-5Sqg/edit?usp=drivesdk<br>AN-498                                 https://docs.google.com/document/d/1yjdk95cKnsu9zYv9q4I1dppcyRy92x10RrVLwpAPY7s/edit?usp=drivesdk<br>AN-101                                 https://docs.google.com/document/d/1Sk8p2Hcj5-BOAhjW-JEd-KfUMHv6WIf3Uyw5wl3FyrQ/edit?usp=drivesdk<br><br>---PERSONNEL---<br>Melvin Français                        https://docs.google.com/document/d/1PHCOV9DbfEK9WlsyBQqPfXS0ks_SZShEBuKiyIAdZps/edit?usp=sharing<br>Issah A. Eisenhower                    https://docs.google.com/document/d/1XDTfrmQuS8IByplhm4kK4vsnPv1lTydvAKjtVT9V_SI/edit?usp=drivesdk<br>Cole Matthews                          https://docs.google.com/document/d/11AHHWUDzvvs5enapDKJ2PQcjwMFHDUo6zT3hS2CzUTU/edit?tab=t.0<br>Andrei Mihai Povaliceanu               https://docs.google.com/document/d/1O-qucMfyPtPdYwM9ggEySGHfCavF_SCIMM_UfOlYCmc/edit?usp=drivesdk',
+                'div':'<br>---HOSTILES---<br>[TS] Test Subjects<br><br>---COMBATANTS---<br>[SCED] Security & Containment Enforcement Division<br>[SRRF] Specialized Counter-Anomaly Rapid Response & Enforcement Detachment<br><br>---PERSONNEL---<br>[RT] Research & Technology<br>[HTS] Health & Trauma Services<br>[MS] Maintenance & Supply<br>[FMS] Facility Management Staff<br>[BFA] Board of Facility Administration<br><br>(!) You may view these subdatas (!)',
+                'link':'Anderson Robotics<br>GRU Division P<br>Nu-7 Hammer Down<br>Blacksite Blossom',
+                'soc':'Discord Server                https://discord.gg/kSyrX5cjXM<br>Faction Hub                   https://discord.gg/eAPUcB7Gp8<br>TS Server                     https://discord.gg/n8J35Zz6KM<br>SCED Server                   https://discord.gg/5KcjqDfFza<br>SCARRED Server                https://discord.gg/5KcjqDfFza<br>ACNS Server                   https://discord.gg/MRnjMtE8aS<br>HTS Server                    https://discord.gg/unZ25GZNay<br>FETS Server                   https://discord.gg/mYdvQr87vu<br>FMS Server                    https://discord.gg/Ng8e6PYVPq<br>Anderson Robotics             https://discord.gg/RpJ5b6Sgd4<br>GRU Division “P”              https://discord.gg/bqt2rE8qnf<br>Nu-7 "Hammer Down"            https://discord.gg/8ypwAcjzMM',
+                'depth ts':'Test subjects are, like the name suggests, the ones that will be used to test anomalies or do labor which has a high risk of killing EDCE personnel.<br>They know of their past, taken from prisons, either death row or without people that will miss them - This often makes them very volatile, so SCED is always allowed to use force.<br>Most ethical rules do not apply to them',
+                'depth sced':'So far the most popular department, they are general facility guards that ensure everything goes smoothly without issues<br>They are usually stationed at either checkpoints, TSC, or patrolling the hallways<br>They have full permission to use lethal force if anything threatens the safety of other personnel',
+                'depth srrf':'SRRF are the equivalent of MTF, the only difference being is that they are permanently stationed at the site<br>They are usually equipped with heavy weaponry, and they will respond to any disruptencies or threats in the facility as quick as possible<br>Rarely seen in TSC',
+                'depth rt':'They are the researchers that conduct tests and contain anomalies<br>Their primary objective is to find ways to neutralize anomalies<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth hts':'They are pretty much doctors and nurses<br>They are the ones who give out amnestics<br>They are allowed to conduct check-ups on personnel and give them medical assistance<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth ms':'They are the facility engineers who repair broken objects<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth fms':'They are the facility managers who supervise everything and manage things, not to be confused with BFA<br>They are the ones who raise alarms, make announcements, etc<br>Lower rank than BFA',
+                'depth bfa':'They are the facility administrators who supervise everything and make all decisions<br>They are the ones who raise alarms, make announcements, etc<br>They have full power and permission over everything',
+            },
+            4: {
+                'help': 'basic command format: [command]<br>depth command format: depth [abreviation-of-subdata] (you will be notified if one of the normal commands executed has viewable subdatas. the subdata abreviations will be mentioned before every subdata, and they will be written inbetween right brackets)<br>login command format: login [database]<br>view command format: view [dir file]',
+                'cmds4': '<br>---LOCAL SYSTEM---<br>ping<br>ipconfig<br>systeminfo<br>ver<br>view (for dir)<br>dir<br>color(red,blue,green,white)<br>echo<br>inbox<br><br>---DATABASE SYSTEM---<br>info<br>div<br>link<br>soc<br>archive<br>depth (for subdatas)',
+                'login fbg': 'You are already logged in.',
+                'inbox': 'Empty',
+                'info': '<br>---SITE INFORMATION---<br>Statute of NAAD                        https://docs.google.com/document/d/1BHoKZdijqbHUKskOg1IusZm3b2DdAvY6FfOdwmYaQ7g/edit?usp=sharing<br>Facility-03 Coded Protocols            https://docs.google.com/document/d/1Yotf0Qvz3w4zLcxctTrUV4-tS_0t9b8ZZ8RZzjfXGCE/edit?usp=sharing<br>Facility-03 Roleplay Information       https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?usp=drivesdk<br>Facility-03 Lore Information 1         https://docs.google.com/document/d/1UPPsdxZIfidxagQFAUmpAWvO5TZLJcHi5MY9w_wRa3Y/edit?tab=t.vaqgwhaqxfmv<br>Facility-03 Lore Information 2         https://docs.google.com/document/d/17aZxqbcb1LMCNMHT5QtCIA-hZSRk-kmTmKcbBsRCGzc/edit?usp=sharing',
+                'archive': '<br>---ANOMALIES---<br>AN-166                                 https://docs.google.com/document/d/12VybqqF3xk2DanUEfqWNz_ztWKaKMWZp0GFiPKzV3p4/edit<br>AN-027                                 https://docs.google.com/document/d/1d9pePwGj_qnTRgbTVn2Xy4RD10NyVH2eIP4IzNHhoOI/edit?usp=drivesdk<br>SCP-049                                https://docs.google.com/document/d/1bS1zI0Ol5IKXQCp8vlohgJRv6rT-dxao/edit?usp=sharing&ouid=101609366160739451702&rtpof=true&sd=true<br>AN-006                                 https://docs.google.com/document/d/17w2AvvWGPkdepn8uZ_lYpf1tkRuU5smAquuFNqTtebM/edit?usp=drivesdk<br>AN-584                                 https://docs.google.com/document/d/1hLHrfHHu7S9qTZw-z80II65Pt4fk4MbqNs6yLJyQYKc/edit?usp=sharing<br>AN-139                                 https://docs.google.com/document/d/1Mtl-c6WYKndowz5cANh11dgKrj_AQ2-E_EJ63U2bUfo/edit?usp=sharing<br>AN-821                                 https://docs.google.com/document/d/1nYEpV533yCREmKI-sem4Z95Ti0A-myCx4Cfef6ZElpM/edit?usp=sharing<br>AN-044                                 https://docs.google.com/document/d/1WGZA4sQyZsM5g1pq6EERnOMg-_tkqSZIMjnXYeqDHlo/edit?usp=drivesdk<br>AN-019                                 https://docs.google.com/document/d/14rEla0zQv2hOaLdAcmpbNmz6XKu49cHDfojwlF-5Sqg/edit?usp=drivesdk<br>AN-498                                 https://docs.google.com/document/d/1yjdk95cKnsu9zYv9q4I1dppcyRy92x10RrVLwpAPY7s/edit?usp=drivesdk<br>AN-101                                 https://docs.google.com/document/d/1Sk8p2Hcj5-BOAhjW-JEd-KfUMHv6WIf3Uyw5wl3FyrQ/edit?usp=drivesdk<br><br>---PERSONNEL---<br>Melvin Français                        https://docs.google.com/document/d/1PHCOV9DbfEK9WlsyBQqPfXS0ks_SZShEBuKiyIAdZps/edit?usp=sharing<br>Issah A. Eisenhower                    https://docs.google.com/document/d/1XDTfrmQuS8IByplhm4kK4vsnPv1lTydvAKjtVT9V_SI/edit?usp=drivesdk<br>Cole Matthews                          https://docs.google.com/document/d/11AHHWUDzvvs5enapDKJ2PQcjwMFHDUo6zT3hS2CzUTU/edit?tab=t.0<br>Andrei Mihai Povaliceanu               https://docs.google.com/document/d/1O-qucMfyPtPdYwM9ggEySGHfCavF_SCIMM_UfOlYCmc/edit?usp=drivesdk',
+                'div':'<br>---HOSTILES---<br>[TS] Test Subjects<br><br>---COMBATANTS---<br>[SCED] Security & Containment Enforcement Division<br>[SRRF] Specialized Counter-Anomaly Rapid Response & Enforcement Detachment<br><br>---PERSONNEL---<br>[RT] Research & Technology<br>[HTS] Health & Trauma Services<br>[MS] Maintenance & Supply<br>[FMS] Facility Management Staff<br>[BFA] Board of Facility Administration<br><br>(!) You may view these subdatas (!)',
+                'link':'Anderson Robotics<br>GRU Division P<br>Nu-7 Hammer Down<br>Blacksite Blossom',
+                'soc':'Discord Server                https://discord.gg/kSyrX5cjXM<br>Faction Hub                   https://discord.gg/eAPUcB7Gp8<br>TS Server                     https://discord.gg/n8J35Zz6KM<br>SCED Server                   https://discord.gg/5KcjqDfFza<br>SCARRED Server                https://discord.gg/5KcjqDfFza<br>ACNS Server                   https://discord.gg/MRnjMtE8aS<br>HTS Server                    https://discord.gg/unZ25GZNay<br>FETS Server                   https://discord.gg/mYdvQr87vu<br>FMS Server                    https://discord.gg/Ng8e6PYVPq<br>Anderson Robotics             https://discord.gg/RpJ5b6Sgd4<br>GRU Division “P”              https://discord.gg/bqt2rE8qnf<br>Nu-7 "Hammer Down"            https://discord.gg/8ypwAcjzMM',
+                'depth ts':'Test subjects are, like the name suggests, the ones that will be used to test anomalies or do labor which has a high risk of killing EDCE personnel.<br>They know of their past, taken from prisons, either death row or without people that will miss them - This often makes them very volatile, so SCED is always allowed to use force.<br>Most ethical rules do not apply to them',
+                'depth sced':'So far the most popular department, they are general facility guards that ensure everything goes smoothly without issues<br>They are usually stationed at either checkpoints, TSC, or patrolling the hallways<br>They have full permission to use lethal force if anything threatens the safety of other personnel',
+                'depth srrf':'SRRF are the equivalent of MTF, the only difference being is that they are permanently stationed at the site<br>They are usually equipped with heavy weaponry, and they will respond to any disruptencies or threats in the facility as quick as possible<br>Rarely seen in TSC',
+                'depth rt':'They are the researchers that conduct tests and contain anomalies<br>Their primary objective is to find ways to neutralize anomalies<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth hts':'They are pretty much doctors and nurses<br>They are the ones who give out amnestics<br>They are allowed to conduct check-ups on personnel and give them medical assistance<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth ms':'They are the facility engineers who repair broken objects<br>They are not allowed to get past the stairs in TSC without a good reason',
+                'depth fms':'They are the facility managers who supervise everything and manage things, not to be confused with BFA<br>They are the ones who raise alarms, make announcements, etc<br>Lower rank than BFA',
+                'depth bfa':'They are the facility administrators who supervise everything and make all decisions<br>They are the ones who raise alarms, make announcements, etc<br>They have full power and permission over everything',
+            },
+            5: {
+
+            }
+        };
+
+        const accessCodes = {
+            'public': { level: 0.9, prompt: 'C:\\LocalAccount> ' },
+            'level1privatekeynr00072': { level: 1, prompt: 'C:\\LocalAccount> ' },
+            'level2privatekeynr001389': { level: 2, prompt: 'C:\\LocalAccount> ' },
+            'bgv2zwwzchjpdmf0zwtlew5yndkxotg3mjq2': { level: 3, prompt: 'C:\\ServerAccount> ' },
+            'bgv2zwwzchjpdmf0zwtlew5ymtkwodi3ndqy': { level: 3, prompt: 'C:\\ServerAccount> ' },
+            'bgv2zwwzchjpdmf0zwtlew5yntc5odixmdey': { level: 3, prompt: 'C:\\ServerAccount> ' },
+            'bgv2zww0chjpdmf0zwtlew5ymta5odi3ndy5mti4mti5nzg2nduxmjq2odc5nq': { level: 4, prompt: 'C:\\AdminAccount> ' },
+            'bgv2zww0chjpdmf0zwtlew5ymju3njgzmji5mta4ntq2mtc1mty1ntc4mty2mq': { level: 4, prompt: 'C:\\AdminAccount> ' },
+            'bgv2zww0chjpdmf0zwtlew5ynduznjyxmjq4mti0nzy4nzeynduxmjq3mtcymw': { level: 4, prompt: 'C:\\AdminAccount> ' },
+            'bgv2zww0chjpdmf0zwtlew5yotg0mzq5odc5ndgwmzqyotg0mzk4mdmxmjk4mw': { level: 4, prompt: 'C:\\AdminAccount> ' },
+            'qujtt0xvvevbq0nfu1nquklwqvrfs0vztlix~qswrtdfvfdmnkbjrytoikpqewtrfdedqwouijhbjhcdvsfgrveyhuioikqsdwj': { level: 5, prompt: 'C:\\RootAccount> ' },
+            'qujtt0xvvevbq0nfu1nquklwqvrfs0vztliy~wqsdrftygtfhrveyjthniouksdcfxgfcdsxgdsxfcgwesrtfyhiujtjbgnhddd': { level: 5, prompt: 'C:\\RootAccount> ' },
+            'qujtt0xvvevbq0nfu1nquklwqvrfs0vztliz~yjhtikouhtijgrhgjfdegfdswfxcgrtfdwqsertewfqderyghffbhvfcgcfsxd': { level: 5, prompt: 'C:\\RootAccount> ' },
+        };
+
+        const outputDiv = document.getElementById('output');
+        const inputField = document.getElementById('input');
+
+        let currentLevel = null;
+
+        inputField.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const input = inputField.value.trim().toLowerCase();
+                inputField.value = '';
+
+                if (!currentLevel) {
+                    outputDiv.innerHTML += `\nC:\\LocalAccount> ${input}`;
+                    if (accessCodes[input]) {
+                        currentLevel = accessCodes[input].level;
+                        const promptText = accessCodes[input].prompt;
+                        outputDiv.innerHTML = `Access granted: Level ${currentLevel}\nExecute >cmds${currentLevel} and >help to begin.\n`;
+                        document.getElementById('prompt').textContent = promptText;
+                    } else {
+                        outputDiv.innerHTML += '\nInvalid or expired encryption key.\n';
+                    }
+                } else {
+                    outputDiv.innerHTML += `\n${document.getElementById('prompt').textContent}${input}`;
+                    let response = '';
+                    const commandSet = commandLevels[currentLevel] || {};
+
+                    
+                    if (input.startsWith('color ')) {
+                        const color = input.split(' ')[1];
+                        const allowedColors = ['red', 'blue', 'green', 'white'];
+
+                        if (allowedColors.includes(color)) {
+                            document.body.style.color = color;
+                            inputField.style.color = color;
+                            document.getElementById('prompt').style.color = color;
+                            response = `Text color changed to ${color}.`;
+                        } else {
+                            response = 'Invalid color.';
+                        }
+
+                    } else if (input.startsWith('echo ')) {
+                        response = input.slice(5);
+
+                    } else if (input === 'dir') {
+                        response = `Directory of C:\\Users\\LocalAccount\n\n(public files)\n10.04.1982   20:47         george.txt\n`;
+
+                    } else if (input === 'cls') {
+                        outputDiv.innerHTML = '';
+                        return;
+
+                    } else if (input === 'ver') {
+                        response = 'Microsoft Facility-03 Black Dagger Database Terminal Disk Operating System [Version PRIVATE 1.05.0.80]';
+
+                    } else if (input.startsWith('view ')) {
+                        const filename = input.slice(5).trim();
+                        const fakeFiles = {
+                            'george.txt': 'This is the content of george.txt\nGEORGE GEORGE GEORGE GEORGE GEORGE GEORGE GEORGE GORGE GEORGE GEORGE GEORGE GEORGEGEORGE GEORGE GEORGE GEORGE',
+                        };
+                        response = fakeFiles[filename.toLowerCase()] || 'The system cannot find the file specified.';
+
+                    } else if (commandSet[input]) {
+                        response = commandSet[input];
+
+                    } else if (input === 'systeminfo') {
+                        const lines = [
+                            'Host Name:                         LOCALACCOUNT',  
+                            'OS Name:                           Microsoft Windows 98 First Edition',  
+                            'OS Version:                        5.10.1112 A',  
+                            'OS Manufacturer:                   Microsoft Corporation',  
+                            'OS Configuration:                  Anderson Robotics Workstation',
+                            'OS Build Type:                     Multiprocessor Free',  
+                            'Registered Owner:                  John Security',  
+                            'Registered Organization:           North Atlantic Anomaly Defense',  
+                            'Product ID:                        28436-AR-1381272-10239',  
+                            'Original Install Date:             1982-03-09, 2:14:01 PM',  
+                            'System Boot Time:                  1982-04-19, 7:15:39 PM',
+                            'System Manufacturer:               Anderson Robotics',  
+                            'System Model:                      TheC-All AR200'  ,
+                            'System Type:                       X86-based PC'  ,
+                            'Processor(s):                      1 Processor(s) Installed.',
+                            '                                   [01]: x86 Family 5 Model 2 Stepping 12 GenuineIntel ~133 Mhz'  ,
+                            'BIOS Version:                      Anderson Robotics Custom 1.00.07.DQ0T' , 
+                            'Windows Directory:                 C:\\WINDOWS'  ,
+                            'System Directory:                  C:\\WINDOWS\\SYSTEM'  ,
+                            'Boot Device:                       \\Device\\HarddiskVolume1'  ,
+                            'System Locale:                     en-us;English (United States)'  ,
+                            'Input Locale:                      en-us;English (United States)' ,
+                            'Time Zone:                         (GMT+02:00) ',
+                            'Total Physical Memory:             64 MB'  ,
+                            'Available Physical Memory:         23 MB'  ,
+                            'Virtual Memory: Max Size:          128 MB'  ,
+                            'Virtual Memory: Available:         74 MB'  ,
+                            'Virtual Memory: In Use:            54 MB'  ,
+                            'Page File Location(s):             C:\\WIN386.SWP'  ,
+                            'Domain:                            LOCALACCOUNT'  ,
+                            'Logon Server:                      \\LocalAccount'  ,
+                            'Hotfix(s):                         None detected'  ,
+                            'Network Card(s):                   1 NIC(s) Installed.'  ,
+                            '                                   [01]: 3Com EtherLink III ISA (3C509b-TPO)'  ,
+                            '                                         Connection Name: Local Area Connection'  ,
+                            '                                         DHCP Enabled:    No'  ,
+                            '                                         IP address(es)'  ,
+                            '                                         [01]: CENSORED IPv4'  ,
+                            '                                         [02]: CENSORED IPv6',
+                            '',
+                            '',
+                        ];
+
+                        let index = 0;
+                        const interval = setInterval(() => {
+                            outputDiv.innerHTML += lines[index] + '\n';
+                            outputDiv.scrollTop = outputDiv.scrollHeight;
+                            index++;
+                            if (index >= lines.length) {
+                                clearInterval(interval);
+                                outputDiv.innerHTML += '\n';
+                            }
+                        }, 50);
+                    
+                    } else if (input === 'ipconfig') {
+                        const ipOutput = [
+                            '',
+                            'Windows IP Configuration',
+                            '',
+                            'Ethernet adapter TerminalLink:',
+                            '',
+                            '   Connection-specific DNS Suffix  . : access.local',
+                            '   IPv4 Address. . . . . . . . . . . : CENSORED IPv4',
+                            '   Subnet Mask . . . . . . . . . . . : CENSORED IPv4',
+                            '   Default Gateway . . . . . . . . . : CENSORED IPv4',
+                            '',
+                            'Tunnel adapter SecureNet:',
+                            '',
+                            '   Connection-specific DNS Suffix  . : secure.internal',
+                            '   IPv6 Address. . . . . . . . . . . : CENSORED IPv6',
+                            '   Default Gateway . . . . . . . . . : ::'
+                        ];
+
+                        let i = 0;
+                        const interval = setInterval(() => {
+                            outputDiv.innerHTML += ipOutput[i] + '\n';
+                            outputDiv.scrollTop = outputDiv.scrollHeight;
+                            i++;
+                            if (i >= ipOutput.length) {
+                                clearInterval(interval);
+                                outputDiv.innerHTML += '\n';
+                            }
+                        }, 0)
+
+                    } else if (input === 'scan') {
+                        const scanOutput = [
+                            'Scanning network...',
+                            'Network scan complete.',
+                            'Detected 1 network: access.local',
+                            'Scan for connected devices:',
+                            '   Device-01: 192.168.1.2 (active)',
+                            '   Device-02: 192.168.1.3 (inactive)',
+                            'Scan complete.'
+                        ];
+
+                        let i = 0;
+                        const interval = setInterval(() => {
+                            outputDiv.innerHTML += scanOutput[i] + '\n';
+                            outputDiv.scrollTop = outputDiv.scrollHeight;
+                            i++;
+                            if (i >= scanOutput.length) {
+                                clearInterval(interval);
+                                outputDiv.innerHTML += '\n';
+                            }
+                        }, 0)
+
+                    } else if (input === 'ping') {
+                        const pingOutput = [
+                            'Pinging base64.core [CENSORED IPv4] with 32 bytes of data:',
+                            'Reply from CENSORED IPv4: bytes=32 time=10ms TTL=64',
+                            'Reply from CENSORED IPv4: bytes=32 time=11ms TTL=64',
+                            'Reply from CENSORED IPv4: bytes=32 time=9ms TTL=64',
+                            'Reply from CENSORED IPv4: bytes=32 time=10ms TTL=64',
+                            '',
+                            'Ping statistics for CENSORED IPv4:',
+                            '    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)',
+                            'Approximate round trip times in milli-seconds:',
+                            '    Minimum = 9ms, Maximum = 11ms, Average = 10ms'
+                        ];
+
+                        let i = 0;
+                        const interval = setInterval(() => {
+                            outputDiv.innerHTML += pingOutput[i] + '\n';
+                            outputDiv.scrollTop = outputDiv.scrollHeight;
+                            i++;
+                            if (i >= pingOutput.length) {
+                                clearInterval(interval);
+                                outputDiv.innerHTML += '\n';
+                            }
+                        }, 150);
+
+
+
+                    
+                    } else {
+                        response = 'Command not recognized.';
+                    }
+
+                    outputDiv.innerHTML += `\n${response}\n\n`;
+                    outputDiv.scrollTop = outputDiv.scrollHeight;
+                }
+
+
+
+            }
+        });
+    </script>
+</body>
+</html>
